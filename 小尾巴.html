@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>骚话小尾巴 - 每句话都加点料</title>
+    <style>
+        :root {
+            --bg: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #222240;
+            --text: #e8e8f0;
+            --text-secondary: #a0a0b8;
+            --accent: #ff6b9d;
+            --accent2: #c084fc;
+            --accent3: #fbbf24;
+            --border: #2a2a44;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --font-size: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 无障碍：高对比度模式 */
+        @media (prefers-contrast: high) {
+            :root {
+                --bg: #000000;
+                --bg-card: #111111;
+                --text: #ffffff;
+                --text-secondary: #dddddd;
+                --border: #444444;
+                --accent: #ff99cc;
+                --accent2: #cc99ff;
+            }
+        }
+
+        /* 无障碍：减少动画 */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+                'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: var(--font-size);
+            line-height: 1.7;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* 背景装饰 */
+        .bg-decor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .bg-decor .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            animation: floatOrb 12s ease-in-out infinite;
+        }
+        .bg-decor .orb:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            top: -80px;
+            left: -60px;
+            animation-delay: 0s;
+        }
+        .bg-decor .orb:nth-child(2) {
+            width: 350px;
+            height: 350px;
+            background: var(--accent2);
+            bottom: -100px;
+            right: -80px;
+            animation-delay: -4s;
+        }
+        .bg-decor .orb:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            background: var(--accent3);
+            top: 40%;
+            left: 60%;
+            animation-delay: -8s;
+            opacity: 0.15;
+        }
+
+        @keyframes floatOrb {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(30px, -40px) scale(1.1);
+            }
+            50% {
+                transform: translate(-20px, 30px) scale(0.9);
+            }
+            75% {
+                transform: translate(10px, 20px) scale(1.05);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 20px 16px 100px;
+        }
+
+        /* 头部 */
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+            padding: 24px 16px 20px;
+        }
+        .header .logo {
+            font-size: 2.4rem;
+            margin-bottom: 8px;
+            animation: wiggle 2s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes wiggle {
+            0%,
+            100% {
+                transform: rotate(-3deg);
+            }
+            50% {
+                transform: rotate(3deg);
+            }
+        }
+        .header h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 卡片 */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            transition: border-color var(--transition), background var(--transition);
+        }
+        .card:hover {
+            border-color: rgba(255, 107, 157, 0.3);
+            background: var(--bg-card-hover);
+        }
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+        }
+        .card-title .icon {
+            font-size: 1.3rem;
+        }
+
+        /* 文本输入 */
+        .input-area textarea {
+            width: 100%;
+            min-height: 140px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 1rem;
+            padding: 14px 16px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.6;
+            transition: border-color var(--transition);
+            outline: none;
+        }
+        .input-area textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.15);
+        }
+        .input-area textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+        .char-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        /* 按钮 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 999px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: inherit;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        .btn:active {
+            transform: scale(0.96);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.35);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 24px rgba(255, 107, 157, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #34d399, #059669);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(52, 211, 153, 0.35);
+        }
+        .btn-success:hover {
+            box-shadow: 0 6px 24px rgba(52, 211, 153, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(251, 191, 36, 0.35);
+        }
+        .btn-warning:hover {
+            box-shadow: 0 6px 24px rgba(251, 191, 36, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-block {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .btn-group .btn {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        /* 输出区 */
+        .output-area {
+            margin-top: 14px;
+        }
+        .output-box {
+            background: rgba(0, 0, 0, 0.35);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            min-height: 80px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 1rem;
+            line-height: 1.7;
+            word-break: break-word;
+            white-space: pre-wrap;
+            transition: border-color var(--transition);
+        }
+        .output-box:empty::before {
+            content: '处理结果将显示在这里…';
+            color: var(--text-secondary);
+            opacity: 0.5;
+            font-style: italic;
+        }
+        .output-box .highlight-tail {
+            color: var(--accent);
+            font-weight: 600;
+            animation: fadeInTail 0.5s ease-out;
+        }
+        @keyframes fadeInTail {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 骚话风格选择 */
+        .style-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .chip {
+            padding: 7px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            user-select: none;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .chip:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: var(--text);
+        }
+        .chip.active {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.25), rgba(192, 132, 252, 0.25));
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(255, 107, 157, 0.2);
+        }
+
+        /* 自定义骚话输入 */
+        .custom-tail-input {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .custom-tail-input input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border);
+            border-radius: 999px;
+            padding: 10px 16px;
+            color: var(--text);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color var(--transition);
+            font-family: inherit;
+        }
+        .custom-tail-input input:focus {
+            border-color: var(--accent2);
+        }
+        .custom-tail-input .btn {
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        /* 无障碍模式区域 */
+        .a11y-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            background: rgba(0, 0, 0, 0.25);
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+        .a11y-status .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+        .a11y-status .dot.unknown {
+            background: #6b7280;
+        }
+        .a11y-status .dot.enabled {
+            background: #34d399;
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+        }
+        .a11y-status .dot.disabled {
+            background: #ef4444;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+        }
+        @keyframes pulseDot {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .a11y-steps {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+        .a11y-steps li {
+            padding: 6px 0;
+            padding-left: 28px;
+            position: relative;
+            counter-increment: step;
+        }
+        .a11y-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 107, 157, 0.2);
+            border: 1px solid rgba(255, 107, 157, 0.4);
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .a11y-steps {
+            counter-reset: step;
+        }
+
+        /* 字体调节 */
+        .font-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .font-controls .btn {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+        .font-size-indicator {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            min-width: 50px;
+            text-align: center;
+        }
+
+        /* 悬浮小尾巴 */
+        .floating-tail {
+            position: fixed;
+            bottom: 24px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .floating-tail .tail-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            box-shadow: 0 6px 24px rgba(255, 107, 157, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            animation: bounceTail 2s ease-in-out infinite;
+            user-select: none;
+        }
+        .floating-tail .tail-btn:active {
+            transform: scale(0.88);
+            animation-play-state: paused;
+        }
+        @keyframes bounceTail {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+        .floating-tail .tail-text {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 3px 8px;
+            border-radius: 999px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            white-space: nowrap;
+        }
+
+        /* Toast 提示 */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            z-index: 200;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            max-width: 90vw;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* 响应式 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px 10px 90px;
+            }
+            .card {
+                padding: 14px;
+                border-radius: 12px;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .header .logo {
+                font-size: 2rem;
+            }
+            .btn {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+            .floating-tail .tail-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+                bottom: 16px;
+                right: 12px;
+            }
+            .floating-tail {
+                bottom: 16px;
+                right: 12px;
+            }
+        }
+        @media (min-width: 768px) {
+            .container {
+                padding: 30px 24px 100px;
+            }
+            .card {
+                padding: 28px;
+            }
+        }
+
+        /* 滚动条美化 */
+        .output-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .output-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .output-box::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        /* 无障碍：大触控目标 */
+        @media (pointer: coarse) {
+            .btn,
+            .chip,
+            .floating-tail .tail-btn {
+                min-height: 44px;
+            }
+            .chip {
+                min-height: 40px;
+                display: inline-flex;
+                align-items: center;
+            }
+        }
+
+        /* 焦点可见性 - 无障碍 */
+        .btn:focus-visible,
+        .chip:focus-visible,
+        textarea:focus-visible,
+        input:focus-visible,
+        .floating-tail .tail-btn:focus-visible {
+            outline: 3px solid var(--accent3);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景装饰 -->
+    <div class="bg-decor" aria-hidden="true">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <!-- Toast 提示 -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- 主容器 -->
+    <div class="container">
+
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo" aria-hidden="true">🐾</div>
+            <h1>骚话小尾巴</h1>
+            <p class="subtitle">给每句话都加点料，让你的文字自带BGM~</p>
+        </header>
+
+        <!-- 文本处理区 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="icon" aria-hidden="true">✏️</span>
+                <span>输入文本</span>
+            </div>
+            <div class="input-area">
+                <textarea id="inputText" placeholder="在这里输入你的文字，支持中英文标点。&#10;比如：今天天气真不错。我们去公园玩吧！&#10;程序会自动在每句话后面加上骚话小尾巴~" aria-label="输入要处理的文本"></textarea>
+                <div class="char-count" id="charCount" aria-live="polite">0 字</div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="btnProcess" aria-label="处理文本添加骚话">
+                    🎯 加尾巴
+                </button>
+                <button class="btn btn-secondary" id="btnClear" aria-label="清空输入">
+                    🗑️ 清空
+                </button>
+            </div>
+        </div>
+
+        <!-- 骚话风格选择 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="icon" aria-hidden="true">🎭</span>
+                <span>选择骚话风格</span>
+            </div>
+            <div class="style-chips" id="styleChips" role="group" aria-label="选择骚话风格">
+                <button class="chip active" data-style="all" role="button" aria-pressed="true">🌈 混合</button>
+                <button class="chip" data-style="funny" role="button" aria-pressed="false">😂 搞笑</button>
+                <button class="chip" data-style="cute" role="button" aria-pressed="false">🥰 可爱</button>
+                <button class="chip" data-style="cool" role="button" aria-pressed="false">😎 霸气</button>
+                <button class="chip" data-style="internet" role="button" aria-pressed="false">🔥 网络热梗</button>
+                <button class="chip" data-style="literary" role="button" aria-pressed="false">📖 文艺</button>
+            </div>
+            <div class="custom-tail-input">
+                <input type="text" id="customTail" placeholder="添加自定义骚话…" aria-label="添加自定义骚话" maxlength="50">
+                <button class="btn btn-secondary" id="btnAddCustom" aria-label="添加自定义骚话到列表">➕ 添加</button>
+            </div>
+        </div>
+
+        <!-- 输出区 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="icon" aria-hidden="true">📋</span>
+                <span>处理结果</span>
+            </div>
+            <div class="output-area">
+                <div class="output-box" id="outputBox" role="textbox" aria-label="处理结果" aria-readonly="true"></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-success" id="btnCopy" aria-label="复制处理结果">
+                    📄 复制结果
+                </button>
+                <button class="btn btn-secondary" id="btnSpeak" aria-label="朗读处理结果">
+                    🔊 朗读
+                </button>
+                <button class="btn btn-secondary" id="btnDownload" aria-label="下载处理结果">
+                    💾 下载
+                </button>
+            </div>
+        </div>
+
+        <!-- 无障碍模式 -->
+        <div class="card" id="a11yCard">
+            <div class="card-title">
+                <span class="icon" aria-hidden="true">♿</span>
+                <span>无障碍模式</span>
+            </div>
+
+            <!-- 状态指示 -->
+            <div class="a11y-status" id="a11yStatus">
+                <span class="dot unknown" id="a11yDot" aria-hidden="true"></span>
+                <span id="a11yStatusText">正在检测无障碍状态…</span>
+            </div>
+
+            <!-- 激活按钮 -->
+            <button class="btn btn-warning btn-block" id="btnActivateA11y" aria-label="尝试激活无障碍模式">
+                🔓 尝试激活手机无障碍模式
+            </button>
+
+            <!-- 手动指引 -->
+            <div style="margin-top:14px;">
+                <strong style="font-size:0.9rem;">📱 手动开启指引：</strong>
+                <ol class="a11y-steps" id="a11ySteps">
+                    <li id="stepAndroid">打开手机 <strong>设置</strong> → <strong>无障碍</strong>（或辅助功能）</li>
+                    <li id="stepAndroid2">找到 <strong>无障碍服务</strong> 或 <strong>已安装的服务</strong></li>
+                    <li>开启相关服务开关</li>
+                    <li>返回本页面，状态将自动更新</li>
+                </ol>
+                <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:8px;">
+                    💡 网页无法直接控制系统级无障碍设置，但可以帮你跳转到设置页面。
+                </p>
+            </div>
+
+            <!-- 网页端无障碍功能 -->
+            <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+                <strong style="font-size:0.9rem;">🌐 网页端无障碍工具：</strong>
+                <div class="font-controls">
+                    <button class="btn btn-secondary" id="btnFontDecrease" aria-label="减小字体">A-</button>
+                    <span class="font-size-indicator" id="fontSizeIndicator" aria-live="polite">16px</span>
+                    <button class="btn btn-secondary" id="btnFontIncrease" aria-label="增大字体">A+</button>
+                    <button class="btn btn-secondary" id="btnHighContrast" aria-label="切换高对比度模式">🌓 高对比</button>
+                    <button class="btn btn-secondary" id="btnToggleSpeak" aria-label="切换自动朗读">🔊 自动朗读</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 悬浮小尾巴 -->
+    <div class="floating-tail" id="floatingTail" role="button" aria-label="快速处理文本" tabindex="0">
+        <button class="tail-btn" aria-hidden="true">🐾</button>
+        <span class="tail-text">点我快速加尾巴</span>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ==================== 骚话库 ====================
+            const TAILS_BY_STYLE = {
+                funny: [
+                    '，笑不活了🤣',
+                    '，这谁顶得住啊！',
+                    '，好家伙，我直接好家伙😆',
+                    '，你是来搞笑的吧哈哈',
+                    '，这波操作我给满分💯',
+                    '，笑死我对你有什么好处😂',
+                    '，能不能严肃点，我憋不住笑了',
+                    '，你这话说的，我差点就信了🤪',
+                ],
+                cute: [
+                    '，嘿嘿~🥰',
+                    '，人家好喜欢呢~💕',
+                    '，啾咪~😘',
+                    '，超可爱的说~✨',
+                    '，萌萌哒~🐰',
+                    '，抱抱~🤗',
+                    '，好温柔呀~🌸',
+                    '，撒娇打滚求关注~🥺',
+                ],
+                cool: [
+                    '，懂我意思吧😎',
+                    '，这格局直接打开👑',
+                    '，霸气侧漏，没谁了🔥',
+                    '，就这？我还能更牛💪',
+                    '，稳得一批，不用慌',
+                    '，气场两米八，谁敢不服😤',
+                    '，拿捏得死死的🎯',
+                    '，王者风范，舍我其谁👊',
+                ],
+                internet: [
+                    '，yyds！🔥',
+                    '，绝绝子！💅',
+                    '，泰裤辣！😝',
+                    '，这波直接芜湖起飞✈️',
+                    '，你品，你细品🤔',
+                    '，格局打开了家人们🌍',
+                    '，主打就是一个真实🎯',
+                    '，这放在整个宇宙都是相当炸裂的💥',
+                    '，栓Q，真的会谢🙏',
+                ],
+                literary: [
+                    '，如春风拂面，余韵悠长🍃',
+                    '，此言如诗，字字珠玑✨',
+                    '，妙哉，此语可入佳句📜',
+                    '，心有戚戚焉，果然同道中人🌙',
+                    '，一语惊醒梦中人🌅',
+                    '，字里行间，皆是风景🏞️',
+                    '，温柔了岁月，惊艳了时光💫',
+                    '，此中有真意，欲辨已忘言🍂',
+                ],
+            };
+
+            const ALL_TAILS = Object.values(TAILS_BY_STYLE).flat();
+            let customTails = [];
+            let currentStyle = 'all';
+            let fontSize = 16;
+            let isHighContrast = false;
+            let autoSpeak = false;
+            let lastOutputText = '';
+            let deviceType = 'unknown'; // 'android' | 'ios' | 'desktop'
+
+            // ==================== DOM 元素 ====================
+            const inputText = document.getElementById('inputText');
+            const charCount = document.getElementById('charCount');
+            const outputBox = document.getElementById('outputBox');
+            const btnProcess = document.getElementById('btnProcess');
+            const btnClear = document.getElementById('btnClear');
+            const btnCopy = document.getElementById('btnCopy');
+            const btnSpeak = document.getElementById('btnSpeak');
+            const btnDownload = document.getElementById('btnDownload');
+            const styleChips = document.getElementById('styleChips');
+            const customTailInput = document.getElementById('customTail');
+            const btnAddCustom = document.getElementById('btnAddCustom');
+            const btnActivateA11y = document.getElementById('btnActivateA11y');
+            const a11yStatusText = document.getElementById('a11yStatusText');
+            const a11yDot = document.getElementById('a11yDot');
+            const btnFontDecrease = document.getElementById('btnFontDecrease');
+            const btnFontIncrease = document.getElementById('btnFontIncrease');
+            const fontSizeIndicator = document.getElementById('fontSizeIndicator');
+            const btnHighContrast = document.getElementById('btnHighContrast');
+            const btnToggleSpeak = document.getElementById('btnToggleSpeak');
+            const floatingTail = document.getElementById('floatingTail');
+            const toast = document.getElementById('toast');
+
+            // ==================== 设备检测 ====================
+            function detectDevice() {
+                const ua = navigator.userAgent.toLowerCase();
+                if (/android/.test(ua)) {
+                    deviceType = 'android';
+                } else if (/iphone|ipad|ipod/.test(ua)) {
+                    deviceType = 'ios';
+                } else if (/windows|mac|linux/.test(ua) && !/mobile/.test(ua)) {
+                    deviceType = 'desktop';
+                } else {
+                    deviceType = 'mobile-other';
+                }
+                updateA11yStatus();
+            }
+
+            // ==================== Toast ====================
+            let toastTimer = null;
+
+            function showToast(message, duration = 2500) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, duration);
+            }
+
+            // ==================== 字符计数 ====================
+            inputText.addEventListener('input', () => {
+                charCount.textContent = inputText.value.length + ' 字';
+            });
+
+            // ==================== 获取随机尾巴 ====================
+            function getRandomTail() {
+                let pool;
+                if (currentStyle === 'all') {
+                    pool = [...ALL_TAILS, ...customTails];
+                } else if (currentStyle === 'custom' && customTails.length > 0) {
+                    pool = [...customTails];
+                } else {
+                    pool = [...(TAILS_BY_STYLE[currentStyle] || []), ...customTails];
+                }
+                if (pool.length === 0) {
+                    pool = ALL_TAILS;
+                }
+                return pool[Math.floor(Math.random() * pool.length)];
+            }
+
+            // ==================== 核心处理函数 ====================
+            function processText(text) {
+                if (!text || text.trim() === '') {
+                    return '';
+                }
+                // 句子结束标点：中文。！？；… 英文.!?;
+                const sentenceEndRegex = /([。！？；…!?;]+)(["'」』"'）\)】\]》〉]*)(\s*)/g;
+                let result = text.replace(sentenceEndRegex, (match, punct, closing, whitespace) => {
+                    const tail = getRandomTail();
+                    // 在标点和闭合引号后、空白前插入尾巴
+                    return punct + closing + tail + whitespace;
+                });
+
+                // 处理没有标点结尾但以换行结尾的段落
+                if (result === text && text.includes('\n')) {
+                    result = text.replace(/\n+/g, (newlines) => {
+                        const tail = getRandomTail();
+                        return tail + newlines;
+                    });
+                }
+
+                // 如果文本完全没有句子结束标点，在末尾追加
+                if (result === text) {
+                    const tail = getRandomTail();
+                    result = text + tail;
+                }
+
+                // 高亮尾巴部分
+                return result;
+            }
+
+            function highlightTails(text) {
+                // 高亮添加的尾巴（大致策略：使用全角逗号到下一个标点之间的内容）
+                const tailPattern = /(，[^。！？；…!?;\n]+?)(?=[。！？；…!?;]|\n|$)/g;
+                return text.replace(tailPattern, '<span class="highlight-tail">$1</span>');
+            }
+
+            function runProcess() {
+                const rawText = inputText.value;
+                if (!rawText || rawText.trim() === '') {
+                    showToast('⚠️ 先输入点文字吧~');
+                    return;
+                }
+                const processed = processText(rawText);
+                lastOutputText = processed;
+                const highlighted = highlightTails(processed);
+                outputBox.innerHTML = highlighted;
+                // 滚动到输出区域
+                outputBox.scrollTop = 0;
+                showToast('✅ 尾巴加好了，快看看！');
+                if (autoSpeak) {
+                    speakText(processed);
+                }
+            }
+
+            // ==================== 按钮事件 ====================
+            btnProcess.addEventListener('click', runProcess);
+            floatingTail.addEventListener('click', () => {
+                if (inputText.value.trim() === '') {
+                    showToast('📝 先输入文字再点我哦~');
+                    inputText.focus();
+                } else {
+                    runProcess();
+                }
+            });
+            floatingTail.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    floatingTail.click();
+                }
+            });
+
+            btnClear.addEventListener('click', () => {
+                inputText.value = '';
+                charCount.textContent = '0 字';
+                outputBox.innerHTML = '';
+                lastOutputText = '';
+                inputText.focus();
+                showToast('🗑️ 已清空');
+            });
+
+            btnCopy.addEventListener('click', async () => {
+                const textToCopy = lastOutputText || outputBox.textContent;
+                if (!textToCopy || textToCopy.trim() === '') {
+                    showToast('⚠️ 没有可复制的内容');
+                    return;
+                }
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(textToCopy);
+                        showToast('📋 已复制到剪贴板！');
+                    } else {
+                        // Fallback
+                        const textarea = document.createElement('textarea');
+                        textarea.value = textToCopy;
+                        textarea.style.position = 'fixed';
+                        textarea.style.opacity = '0';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        showToast('📋 已复制到剪贴板！');
+                    }
+                } catch (err) {
+                    showToast('❌ 复制失败，请手动选择复制');
+                }
+            });
+
+            btnSpeak.addEventListener('click', () => {
+                const textToSpeak = lastOutputText || outputBox.textContent;
+                if (!textToSpeak || textToSpeak.trim() === '') {
+                    showToast('⚠️ 没有可朗读的内容');
+                    return;
+                }
+                speakText(textToSpeak);
+            });
+
+            btnDownload.addEventListener('click', () => {
+                const textToDownload = lastOutputText || outputBox.textContent;
+                if (!textToDownload || textToDownload.trim() === '') {
+                    showToast('⚠️ 没有可下载的内容');
+                    return;
+                }
+                const blob = new Blob([textToDownload], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '骚话尾巴_' + new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-') + '.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast('💾 已下载');
+            });
+
+            // ==================== 语音朗读 ====================
+            function speakText(text) {
+                if (!('speechSynthesis' in window)) {
+                    showToast('❌ 当前浏览器不支持语音朗读');
+                    return;
+                }
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 1.0;
+                utterance.pitch = 1.1;
+                utterance.onend = () => {
+                    // 朗读结束
+                };
+                utterance.onerror = () => {
+                    showToast('⚠️ 朗读出错了');
+                };
+                window.speechSynthesis.speak(utterance);
+                showToast('🔊 开始朗读…');
+            }
+
+            btnToggleSpeak.addEventListener('click', () => {
+                autoSpeak = !autoSpeak;
+                btnToggleSpeak.textContent = autoSpeak ? '🔊 自动朗读: 开' : '🔊 自动朗读: 关';
+                btnToggleSpeak.style.borderColor = autoSpeak ? 'var(--accent)' : 'var(--border)';
+                showToast(autoSpeak ? '🔊 自动朗读已开启' : '🔇 自动朗读已关闭');
+            });
+
+            // ==================== 风格选择 ====================
+            styleChips.addEventListener('click', (e) => {
+                const chip = e.target.closest('.chip');
+                if (!chip) return;
+                styleChips.querySelectorAll('.chip').forEach(c => {
+                    c.classList.remove('active');
+                    c.setAttribute('aria-pressed', 'false');
+                });
+                chip.classList.add('active');
+                chip.setAttribute('aria-pressed', 'true');
+                currentStyle = chip.dataset.style;
+                showToast('🎭 风格已切换: ' + chip.textContent.trim());
+            });
+
+            // ==================== 自定义尾巴 ====================
+            btnAddCustom.addEventListener('click', () => {
+                const custom = customTailInput.value.trim();
+                if (!custom) {
+                    showToast('⚠️ 输入一个骚话先~');
+                    return;
+                }
+                // 确保以逗号开头（如果用户没加）
+                const formatted = custom.startsWith('，') || custom.startsWith(',') || custom.startsWith(' ') ?
+                    custom :
+                    '，' + custom;
+                if (!customTails.includes(formatted)) {
+                    customTails.push(formatted);
+                    showToast('✅ 已添加: ' + formatted);
+                    customTailInput.value = '';
+                } else {
+                    showToast('⚠️ 这个尾巴已经有了');
+                }
+            });
+
+            customTailInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    btnAddCustom.click();
+                }
+            });
+
+            // ==================== 无障碍模式 ====================
+            function updateA11yStatus() {
+                if (deviceType === 'android') {
+                    a11yStatusText.textContent = '检测到 Android 设备，可尝试跳转到无障碍设置';
+                    a11yDot.className = 'dot unknown';
+                } else if (deviceType === 'ios') {
+                    a11yStatusText.textContent = '检测到 iOS 设备，请在设置中开启辅助功能';
+                    a11yDot.className = 'dot unknown';
+                } else if (deviceType === 'desktop') {
+                    a11yStatusText.textContent = '桌面端，无障碍功能仅限网页内调整';
+                    a11yDot.className = 'dot disabled';
+                } else {
+                    a11yStatusText.textContent = '未知设备类型';
+                    a11yDot.className = 'dot unknown';
+                }
+                updateA11ySteps();
+            }
+
+            function updateA11ySteps() {
+                const steps = document.querySelectorAll('.a11y-steps li');
+                if (deviceType === 'android') {
+                    if (steps[0]) steps[0].innerHTML = '打开手机 <strong>设置</strong> → <strong>无障碍</strong>（或辅助功能）';
+                    if (steps[1]) steps[1].innerHTML = '找到 <strong>无障碍服务</strong> 或 <strong>已安装的服务</strong>';
+                } else if (deviceType === 'ios') {
+                    if (steps[0]) steps[0].innerHTML = '打开 <strong>设置</strong> → <strong>辅助功能</strong>';
+                    if (steps[1]) steps[1].innerHTML = '选择需要的辅助功能（如旁白、缩放等）';
+                }
+            }
+
+            btnActivateA11y.addEventListener('click', () => {
+                if (deviceType === 'android') {
+                    // 尝试多种方式跳转到无障碍设置
+                    attemptOpenAndroidA11ySettings();
+                } else if (deviceType === 'ios') {
+                    showToast('📱 iOS 请手动前往: 设置 → 辅助功能');
+                } else if (deviceType === 'desktop') {
+                    showToast('💻 桌面端请在浏览器中调整无障碍选项');
+                } else {
+                    showToast('📱 请手动打开手机设置中的无障碍/辅助功能');
+                }
+            });
+
+            function attemptOpenAndroidA11ySettings() {
+                // 方法1: 尝试使用 intent:// URI
+                const intentUri = 'intent://#Intent;action=android.settings.ACCESSIBILITY_SETTINGS;end';
+                // 方法2: 尝试直接跳转
+                const settingsUri = 'android.settings.ACCESSIBILITY_SETTINGS';
+
+                let opened = false;
+
+                // 尝试创建一个隐藏的iframe来触发intent
+                try {
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = intentUri;
+                    document.body.appendChild(iframe);
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                    }, 2000);
+                    opened = true;
+                    showToast('🔓 正在尝试打开无障碍设置…');
+                } catch (e) {
+                    // 忽略错误
+                }
+
+                if (!opened) {
+                    // 尝试使用 location
+                    try {
+                        window.location.href = intentUri;
+                        opened = true;
+                        showToast('🔓 正在尝试打开无障碍设置…');
+                    } catch (e2) {
+                        // 忽略
+                    }
+                }
+
+                // 如果都没有成功，显示手动指引
+                setTimeout(() => {
+                    if (!opened) {
+                        showToast('📱 请手动: 设置 → 无障碍 → 开启服务');
+                    }
+                }, 1500);
+
+                // 始终显示手动指引作为备选
+                showToast('💡 如果未自动跳转，请手动前往设置');
+            }
+
+            // ==================== 字体调节 ====================
+            function updateFontSize() {
+                document.documentElement.style.fontSize = fontSize + 'px';
+                fontSizeIndicator.textContent = fontSize + 'px';
+            }
+
+            btnFontDecrease.addEventListener('click', () => {
+                fontSize = Math.max(12, fontSize - 2);
+                updateFontSize();
+                showToast('🔍 字体: ' + fontSize + 'px');
+            });
+
+            btnFontIncrease.addEventListener('click', () => {
+                fontSize = Math.min(28, fontSize + 2);
+                updateFontSize();
+                showToast('🔍 字体: ' + fontSize + 'px');
+            });
+
+            // ==================== 高对比度 ====================
+            btnHighContrast.addEventListener('click', () => {
+                isHighContrast = !isHighContrast;
+                if (isHighContrast) {
+                    document.documentElement.style.setProperty('--bg', '#000000');
+                    document.documentElement.style.setProperty('--bg-card', '#111111');
+                    document.documentElement.style.setProperty('--bg-card-hover', '#1a1a1a');
+                    document.documentElement.style.setProperty('--text', '#ffffff');
+                    document.documentElement.style.setProperty('--text-secondary', '#dddddd');
+                    document.documentElement.style.setProperty('--border', '#555555');
+                    document.documentElement.style.setProperty('--accent', '#ff99cc');
+                    document.documentElement.style.setProperty('--accent2', '#cc99ff');
+                    btnHighContrast.textContent = '🌓 高对比: 开';
+                    btnHighContrast.style.borderColor = 'var(--accent)';
+                    showToast('🌓 高对比度模式已开启');
+                } else {
+                    document.documentElement.style.setProperty('--bg', '#0f0f1a');
+                    document.documentElement.style.setProperty('--bg-card', '#1a1a2e');
+                    document.documentElement.style.setProperty('--bg-card-hover', '#222240');
+                    document.documentElement.style.setProperty('--text', '#e8e8f0');
+                    document.documentElement.style.setProperty('--text-secondary', '#a0a0b8');
+                    document.documentElement.style.setProperty('--border', '#2a2a44');
+                    document.documentElement.style.setProperty('--accent', '#ff6b9d');
+                    document.documentElement.style.setProperty('--accent2', '#c084fc');
+                    btnHighContrast.textContent = '🌓 高对比';
+                    btnHighContrast.style.borderColor = 'var(--border)';
+                    showToast('🌓 已恢复正常模式');
+                }
+            });
+
+            // ==================== 键盘快捷键 ====================
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    runProcess();
+                }
+            });
+
+            // ==================== 初始化 ====================
+            function init() {
+                detectDevice();
+                updateFontSize();
+                // 设置初始字符计数
+                charCount.textContent = inputText.value.length + ' 字';
+                // 如果是Android设备，在页面加载时给出提示
+                if (deviceType === 'android') {
+                    setTimeout(() => {
+                        showToast('💡 点击"尝试激活无障碍模式"可跳转设置', 3500);
+                    }, 1500);
+                }
+            }
+
+            // ==================== 无障碍：检测系统偏好 ====================
+            function checkSystemPreferences() {
+                // 检测减少动画偏好
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    document.documentElement.classList.add('reduced-motion');
+                }
+                // 检测高对比度偏好
+                if (window.matchMedia('(prefers-contrast: high)').matches) {
+                    if (!isHighContrast) {
+                        btnHighContrast.click();
+                    }
+                }
+                // 检测深色模式偏好
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    // 已经默认是暗色
+                }
+            }
+
+            // 监听系统偏好变化
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                // 可以响应系统主题变化
+            });
+
+            // ==================== 页面加载完成 ====================
+            document.addEventListener('DOMContentLoaded', () => {
+                init();
+                checkSystemPreferences();
+            });
+
+            // 如果DOM已加载完成
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                init();
+                checkSystemPreferences();
+            }
+
+            // ==================== 导出API（可选） ====================
+            window.saoHuaTail = {
+                process: processText,
+                getRandomTail: getRandomTail,
+                addCustomTail: (t) => {
+                    const formatted = t.startsWith('，') || t.startsWith(',') ? t : '，' + t;
+                    if (!customTails.includes(formatted)) {
+                        customTails.push(formatted);
+                        return true;
+                    }
+                    return false;
+                },
+                setStyle: (style) => {
+                    currentStyle = style;
+                },
+            };
+
+        })();
+    </script>
+</body>
+</html>
